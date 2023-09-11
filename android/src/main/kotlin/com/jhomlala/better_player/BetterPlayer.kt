@@ -387,12 +387,16 @@ internal class BetterPlayer(
             }
             type = Util.inferContentTypeForExtension(lastPathSegment)
         } else {
-            type = when (formatHint) {
-                FORMAT_SS -> C.CONTENT_TYPE_SS
-                FORMAT_DASH -> C.CONTENT_TYPE_DASH
-                FORMAT_HLS -> C.CONTENT_TYPE_HLS
-                FORMAT_OTHER -> C.CONTENT_TYPE_OTHER
-                else -> -1
+            val type: Int = if (formatHint == null) {
+                Util.inferContentType(uri)
+            } else {
+                when (formatHint) {
+                    FORMAT_SS -> C.CONTENT_TYPE_SS
+                    FORMAT_DASH -> C.CONTENT_TYPE_DASH
+                    FORMAT_HLS -> C.CONTENT_TYPE_HLS
+                    FORMAT_OTHER -> C.CONTENT_TYPE_OTHER
+                    else -> -1
+                }
             }
         }
         val mediaItemBuilder = MediaItem.Builder()
